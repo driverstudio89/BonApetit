@@ -27,6 +27,12 @@ public class Category {
 
     }
 
+    public Category(CategoryName categoryName, String description) {
+        super();
+        this.categoryName = categoryName;
+        this.description = description;
+    }
+
     public long getId() {
         return id;
     }
