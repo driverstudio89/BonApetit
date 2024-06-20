@@ -3,6 +3,7 @@ package com.bonappetit.model.entity;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -25,7 +26,7 @@ public class User {
     private List<Recipe> addedRecipes;
 
     @ManyToMany(targetEntity = Recipe.class)
-    private List<Recipe> favoriteRecipes;
+    private Set<Recipe> favoriteRecipes;
 
     public User() {
 
@@ -71,11 +72,11 @@ public class User {
         this.addedRecipes = addedRecipes;
     }
 
-    public List<Recipe> getFavoriteRecipes() {
+    public Set<Recipe> getFavoriteRecipes() {
         return favoriteRecipes;
     }
 
-    public void setFavoriteRecipes(List<Recipe> favoriteRecipes) {
+    public void setFavoriteRecipes(Set<Recipe> favoriteRecipes) {
         this.favoriteRecipes = favoriteRecipes;
     }
 }

@@ -17,9 +17,12 @@ public class UserController {
 
     private final UserService userService;
 
+    private final UserSession userSession;
 
-    public UserController(UserService userService, UserSession userSession) {
+
+    public UserController(UserService userService, UserSession userSession, UserSession userSession1) {
         this.userService = userService;
+        this.userSession = userSession1;
     }
 
     @ModelAttribute("registerData")
@@ -35,6 +38,9 @@ public class UserController {
 
     @GetMapping("/users/register")
     public String viewRegister() {
+        if (userSession.isLoggedIn()) {
+            return "redirect:/home";
+        }
         return "register";
     }
 
@@ -43,6 +49,10 @@ public class UserController {
             @Valid UserRegisterDto userRegisterDto,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes) {
+
+        if (userSession.isLoggedIn()) {
+            return "redirect:/home";
+        }
 
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("registerData", userRegisterDto);
@@ -68,6 +78,9 @@ public class UserController {
 
     @GetMapping("/users/login")
     public String viewLogin() {
+        if (userSession.isLoggedIn()) {
+            return "redirect:/home";
+        }
         return "login";
     }
 
@@ -76,6 +89,10 @@ public class UserController {
         @Valid UserLoginDto userLoginDto,
         BindingResult bindingResult,
         RedirectAttributes redirectAttributes) {
+
+        if (userSession.isLoggedIn()) {
+            return "redirect:/home";
+        }
 
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("loginData", userLoginDto);
@@ -92,4 +109,12 @@ public class UserController {
 
     }
 
+    @GetMapping("/logout")
+    public String logout() {
+        if (!userSession.isLoggedIn()) {
+            return "redirect:/home";
+        }
+        userSession.logout();
+        return "redirect:/";
+    }
 }
